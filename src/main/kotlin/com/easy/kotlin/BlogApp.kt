@@ -35,13 +35,13 @@ fun Application.module() {
 }
 
 fun main(args: Array<String>) {
-    //embeddedServer(Netty, 8080, watchPaths = listOf("BlogAppKt"), module = Application::module).start()
-    val server = embeddedServer(Netty, port = 8080) { // (2)
+    embeddedServer(Netty, 8080, watchPaths = listOf("BlogAppKt"), module = Application::module).start()
+    /*val server = embeddedServer(Netty, port = 8080) { // (2)
         this.routing { // (3)
             get("/") { // (4)
                 call.respondText("Hello World!") // (5)
             }
         }
     }
-    server.start(wait = true) // (6)
+    server.start(wait = true) // (6)*/
 }
