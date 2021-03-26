@@ -25,7 +25,7 @@ fun Application.module() {
         }
 
         get("/hello") {
-            call.respondText("Hello, Ktor !", ContentType.Text.Html)
+            call.respondText("Hllo, Ktor !", ContentType.Text.Html)
         }
 
         get("/now") {
