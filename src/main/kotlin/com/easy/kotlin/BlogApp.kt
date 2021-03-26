@@ -11,13 +11,14 @@ import org.jetbrains.ktor.netty.Netty
 import org.jetbrains.ktor.response.respondText
 import org.jetbrains.ktor.routing.Routing
 import org.jetbrains.ktor.routing.get
+import org.jetbrains.ktor.routing.routing
 import java.util.*
 
 fun Application.module() {
     install(DefaultHeaders)
     install(CallLogging)
     install(Routing) {
-        get("/") {
+        this.get("/") {
             var html = "<li><a href = 'hello'>hello</a></li>"
             html += "<li><a href = 'now'>now</a></li>"
             call.respondText(html, ContentType.Text.Html)
@@ -34,5 +35,13 @@ fun Application.module() {
 }
 
 fun main(args: Array<String>) {
-    embeddedServer(Netty, 8080, watchPaths = listOf("BlogAppKt"), module = Application::module).start()
+    //embeddedServer(Netty, 8080, watchPaths = listOf("BlogAppKt"), module = Application::module).start()
+    val server = embeddedServer(Netty, port = 8080) { // (2)
+        this.routing { // (3)
+            get("/") { // (4)
+                call.respondText("Hello World!") // (5)
+            }
+        }
+    }
+    server.start(wait = true) // (6)
 }
