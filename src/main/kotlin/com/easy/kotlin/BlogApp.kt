@@ -2,12 +2,14 @@ package com.easy.kotlin
 
 
 import org.jetbrains.ktor.application.Application
+import org.jetbrains.ktor.application.ApplicationCall
 import org.jetbrains.ktor.application.install
 import org.jetbrains.ktor.features.CallLogging
 import org.jetbrains.ktor.features.DefaultHeaders
 import org.jetbrains.ktor.host.embeddedServer
 import org.jetbrains.ktor.http.ContentType
 import org.jetbrains.ktor.netty.Netty
+import org.jetbrains.ktor.pipeline.PipelineContext
 import org.jetbrains.ktor.response.respondText
 import org.jetbrains.ktor.routing.Routing
 import org.jetbrains.ktor.routing.get
@@ -44,4 +46,11 @@ fun main(args: Array<String>) {
         }
     }
     server.start(wait = true) // (6)*/
+}
+
+
+private suspend fun PipelineContext<Unit, ApplicationCall>.respondOn(operation: (String) -> Todo?) {
+    call.parameters["id"]?.let {
+        operation.invoke(it)?.let { todo -> call.respond(todo) }
+    } ?: call.respond(HttpStatusCode.NotFound)
 }
