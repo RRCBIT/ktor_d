@@ -7,6 +7,13 @@ import io.ktor.response.*
 import io.ktor.http.*
 import io.ktor.routing.*
 
+fun Route.listOrdersRoute() {
+    get("/order") {
+        if (orderStorage.isNotEmpty()) {
+            call.respond(orderStorage)
+        }
+    }
+}
 fun Route.customerRouting() {
     route("/customer") {
         get {
